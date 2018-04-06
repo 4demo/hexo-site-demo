@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+- lts/*
+before_install:
+- openssl aes-256-cbc -K $encrypted_943666de9f06_key -iv $encrypted_943666de9f06_iv
+  -in ssh-key-for-github.enc -out ~/.ssh/ssh-key-for-github -d
+- chmod 600 ~/.ssh/ssh-key-for-github
+- cp -f ssh_config ~/.ssh/config
+install:
+- npm install
+before_script:
+- npm install hexo-cli -g
+script:
+- hexo g
+after_script:
+- cd public
+- git init
+- git config user.name "Shauway"
+- git config user.email "ha.shauway@gmail.com"
+- git add .
+- git commit -m 'Site updated'
+- git remote add origin git@github.com:4demo/hexo-site-demo.git
+- git push -f origin master+:gh-pages
